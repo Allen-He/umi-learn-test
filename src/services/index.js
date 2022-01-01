@@ -1,3 +1,5 @@
+import qs from 'query-string'
+
 const appkey = 'Allen_He_1602512631187';
 
 const api = {
@@ -27,7 +29,35 @@ const api = {
       delete resp.findByPage;
       return resp;
     }
+  },
+  async addStudents(stuInfo = {}) {
+    const query = qs.stringify(stuInfo);
+    const curUrl = `/api/student/addStudent?appkey=${appkey}&${query}`
+    const data = await fetch(curUrl).then(resp => resp.json());
+    return data;
+  },
+  async updateStudents(newStuInfo = {}) {
+    const query = qs.stringify(newStuInfo);
+    const curUrl = `/api/student/updateStudent?appkey=${appkey}&${query}`
+    const data = await fetch(curUrl).then(resp => resp.json());
+    return data;
+  },
+  async getStudentBySNo(sNo = '') {
+    const curUrl = `/api/student/findAll?appkey=${appkey}`
+    const data = await fetch(curUrl).then(resp => resp.json()).then(res => res.data);
+    const stu = data.filter(it => it.sNo === sNo);
+    return stu[0] ? stu[0] : {};
   }
 }
 
 export default api;
+
+// api.updateStudents({
+//   sNo: '999999',
+//   name: '测试测试',
+//   sex: 0,
+//   birth: 1999,
+//   phone: '13654852158',
+//   address: '成都',
+//   email: '123@qq.com'
+// });

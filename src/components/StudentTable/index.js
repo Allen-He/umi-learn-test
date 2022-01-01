@@ -1,33 +1,54 @@
 import React from 'react'
 import style from "./index.css"
-import { Link } from 'umi'
+import { history } from 'umi'
+import { Table, Button } from 'antd';
 
 export default function StudentTable(props) {
-    const trs = props.stus.map(s => <tr key={s.id}>
-        <td>{s.sNo}</td>
-        <td>{s.name}</td>
-        <td>{s.sex === 1 ? "女" : "男"}</td>
-        <td>{s.birth}</td>
-        <td>{s.email}</td>
-        <td>
-            <Link to={`/students/${s.sNo}`}>详情</Link>
-        </td>
-    </tr>)
-    return (
-        <table className={style.tab}>
-            <thead>
-                <tr>
-                    <th>学号</th>
-                    <th>姓名</th>
-                    <th>性别</th>
-                    <th>出生年份</th>
-                    <th>邮箱</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                {trs}
-            </tbody>
-        </table>
-    )
+	const columns = [
+		{
+			title: '学号',
+			dataIndex: 'sNo',
+		},
+		{
+			title: '姓名',
+			dataIndex: 'name',
+		},
+		{
+			title: '性别',
+			dataIndex: 'sex',
+			render(sex) {
+				return sex === 0 ? '男' : '女';
+			}
+		},
+		{
+			title: '出生年份',
+			dataIndex: 'birth',
+		},
+		{
+			title: '邮箱',
+			dataIndex: 'email',
+		},
+		{
+			title: '操作',
+			render(curStu) {
+				return <Button type="link" onClick={() => {
+					history.push(`/students/${curStu.sNo}`);
+				}}>修改</Button>
+			}
+		}
+	];
+
+	return (
+		<Table columns={columns} dataSource={props.stus} rowKey="id" className={style.tableBox}
+			loading={props.loading}
+			pagination={{
+				current: props.current,
+				total: props.total,
+				pageSize: props.pageSize,
+				showQuickJumper: true,
+				onChange: props.onPageChange,
+				position: ['bottomLeft']
+			}}
+		/>
+	)
 }

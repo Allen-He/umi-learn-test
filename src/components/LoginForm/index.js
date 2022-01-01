@@ -1,24 +1,27 @@
 import React, {useRef} from 'react'
 import style from './index.css'
+import { Typography, Space, Button, Input } from 'antd';
+import { UserOutlined, EditOutlined } from '@ant-design/icons';
+
+const { Title } = Typography;
 
 export default function LoginForm(props) {
   const countRef = useRef();
   const pwdRef = useRef();
   return (
     <div className={style.loginForm}>
-      <div className={style.item}>
-        <label>账号：<input ref={countRef} type="text" /></label>
-      </div>
-      <div className={style.item}>
-        <label>密码：<input ref={pwdRef} type="password" /></label>
-      </div>
-      <button className={style.btn}
-        onClick={() => {
-          const loginId = countRef.current.value;
-          const loginPwd = pwdRef.current.value;
-          props.onLogin && props.onLogin(loginId, loginPwd);
-        }}
-      >登录</button>
+      <Title level={4}>欢迎登录-学生管理系统</Title>
+      <Space direction="vertical">
+        <Input ref={countRef} placeholder="请输入账号" prefix={<UserOutlined />} />
+        <Input.Password ref={pwdRef} placeholder="请输入密码" prefix={<EditOutlined />} />
+        <Button block type='primary'
+          onClick={() => {
+            const loginId = countRef.current.input.value;
+            const loginPwd = pwdRef.current.input.value;
+            props.onLogin && props.onLogin(loginId, loginPwd);
+          }}
+        >登录</Button>
+      </Space>
     </div>
   )
 }
