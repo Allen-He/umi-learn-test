@@ -2,11 +2,16 @@ import qs from 'query-string'
 
 const appkey = 'Allen_He_1602512631187';
 
+function myFetch(path) {
+  const domain = 'http://open.duyiedu.com';
+  return fetch(domain + path);
+}
+
 const api = {
   async getAllStusByPagination(page, limit) {
     const path = '/api/student/findByPage';
     const curUrl = `${path}?appkey=${appkey}&page=${page}&size=${limit}`;
-    const data = await fetch(curUrl).then(resp => resp.json()).then(res => res.data);
+    const data = await myFetch(curUrl).then(resp => resp.json()).then(res => res.data);
     return data;
   },
   /**
@@ -18,7 +23,7 @@ const api = {
   async searchStudents({ page = 1, limit = 10, key = "", sex = -1 } = {}) {
     if (key) { //按关键词搜索
       const path = '/api/student/searchStudent';
-      const resp = await fetch(`${path}?appkey=${appkey}&page=${page}&size=${limit}&search=${key}&sex=${sex}`)
+      const resp = await myFetch(`${path}?appkey=${appkey}&page=${page}&size=${limit}&search=${key}&sex=${sex}`)
         .then(resp => resp.json()).then(resp => resp.data);
       resp.datas = resp.searchList;
       delete resp.searchList;
@@ -33,18 +38,18 @@ const api = {
   async addStudents(stuInfo = {}) {
     const query = qs.stringify(stuInfo);
     const curUrl = `/api/student/addStudent?appkey=${appkey}&${query}`
-    const data = await fetch(curUrl).then(resp => resp.json());
+    const data = await myFetch(curUrl).then(resp => resp.json());
     return data;
   },
   async updateStudents(newStuInfo = {}) {
     const query = qs.stringify(newStuInfo);
     const curUrl = `/api/student/updateStudent?appkey=${appkey}&${query}`
-    const data = await fetch(curUrl).then(resp => resp.json());
+    const data = await myFetch(curUrl).then(resp => resp.json());
     return data;
   },
   async getStudentBySNo(sNo = '') {
     const curUrl = `/api/student/findAll?appkey=${appkey}`
-    const data = await fetch(curUrl).then(resp => resp.json()).then(res => res.data);
+    const data = await myFetch(curUrl).then(resp => resp.json()).then(res => res.data);
     const stu = data.filter(it => it.sNo === sNo);
     return stu[0] ? stu[0] : {};
   }
