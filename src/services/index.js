@@ -3,7 +3,7 @@ import qs from 'query-string'
 const appkey = 'Allen_He_1602512631187';
 
 function myFetch(path) {
-  const domain = 'http://open.duyiedu.com';
+  const domain = 'https://open.duyiedu.com';
   return fetch(domain + path);
 }
 
