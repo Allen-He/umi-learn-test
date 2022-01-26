@@ -4,5 +4,6 @@ export default {
       'target': 'http://open.duyiedu.com',
       'changeOrigin': true,
     },
-  }
+  },
+  publicPath: './'
 }
